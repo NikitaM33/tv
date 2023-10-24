@@ -1,0 +1,33 @@
+@import "fonts";
+@import "variables";
+@import "libs/normalize";
+@import "components/all";
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  font-family: "Roboto";
+}
+
+h2,
+h1 {
+  margin: 0;
+}
+
+.wrapper {
+  max-width: 1400px;
+  width: calc(100vw - 100px);
+  height: 100%;
+  margin: 0 auto;
+
+  @media screen and (min-width: $tablet) {
+    width: calc(100% - 1.5rem);
+  }
+
+  @media screen and (min-width: $mobileL) {
+    width: calc(100% - 2.5rem);
+  }
+}

@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
-import { Main, PromoZone } from './components';
+import { Main, PromoZone, FinalScreen } from './components';
 
 const App = () => {
   return (
@@ -7,6 +7,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/promo" element={<PromoZone />} />
+        <Route path="/final" element={<FinalScreen />} />
       </Routes>
     </div>
   );

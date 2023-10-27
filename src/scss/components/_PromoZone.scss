@@ -23,6 +23,61 @@
         width: 100%;
         height: 100%;
     }
+
+    &__info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-end;
+        height: 100%;
+        padding: 0 2.5rem 2.5rem 0;
+    }
+
+    &__cross {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 1.8rem;
+        padding: 0.5rem 2rem;
+        background: $white;
+        border: 2px solid $black;
+        cursor: pointer;
+
+        &:hover {
+            background: $black;
+        }
+    }
+
+    &__cross:hover &__svgLine {
+        stroke: $white;
+    }
+
+    &__qr {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+        & p {
+            width: 25%;
+            font-weight: 500;
+            font-size: 1rem;
+            text-transform: uppercase;
+            text-align: end;
+            margin-right: 0.6rem;
+        }
+    }
+
+    &__qrCode {
+       width: 6.8rem;
+       height: 6.8rem;
+       
+       & img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+       }
+    }
 }
 
 .side {

@@ -33,7 +33,7 @@
     padding: 1.25rem 0.6rem 0.6rem 0.6rem;
     background: $mainBlue;
     opacity: 1;
-    animation: smoothAppearance 6s linear;
+    animation: smoothAppearance 2s linear;
 
     @keyframes smoothAppearance {
         0%, 80% {opacity: 0}

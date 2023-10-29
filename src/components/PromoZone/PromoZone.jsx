@@ -1,29 +1,26 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import cn from 'classnames';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 
 import videoBg from '../../assets/video/secondScreen.mp4';
 import qr from '../../assets/img/qr.svg';
+import { sendPhone } from '../../redux/actions/sendPhone';
 
 const PromoZone = () => {
-  const [ dis, setDis ] = useState(false);
+  const dispatch = useDispatch();
+  const redirectTo = useNavigate();
   const [ phoneNumber, setPhoneNumber ] = useState("");
+  const [ dis, setDis ] = useState(false);
+  const [ isFullNumber, setIsFullNumber ] = useState(false);
   const focusRef = useRef();
 
   let formatedNumber = "";
   const firstSymbol = phoneNumber[0] == "8" ? "8" : "+7";
 
-  const numbersValue = (input) => {
-    // return input.value.replace(/\D/g, '');
-    return input.value.replace(/[a-zA-Z]\D/g, '');
-  }
-
   // Handle key pad
   const handleKeyPad = (e) => {
-    const test = e.target.value;
-
-
-    setPhoneNumber(test);
+    const value = e.target.value;
+    setPhoneNumber(value);
   }
 
   // Handle num pad
@@ -38,14 +35,34 @@ const PromoZone = () => {
     setPhoneNumber(phoneNumber + keyNumber);
   }
 
+  // Remove phone number
   const removePhoneNumber = (e) => {
     setPhoneNumber("");
     focusRef.current.focus();
   }
 
+  const handleConfirm = (e) => {
+    if (e.target.checked) {
+      setDis(true);
+    } else {
+      setDis(false);
+    }
+  }
+
+  const handleSubmit = () => {
+    dispatch(sendPhone(phoneNumber));
+    redirectTo('/final');
+  }
+
   useEffect(() => {
     if (phoneNumber && phoneNumber[0].match(/[^+0-9]/g)) {
       setPhoneNumber("");
+    }
+
+    if (phoneNumber.length >= 17) {
+      setIsFullNumber(true);
+    } else {
+      setIsFullNumber(false);
     }
 
     if (["7", "8", "9"].includes(phoneNumber[0])) {
@@ -87,16 +104,11 @@ const PromoZone = () => {
 
     if (phoneNumber[0] == "+" && phoneNumber.length > 18) {
       setPhoneNumber(phoneNumber.slice(0, 18));
+      console.log("EFFECT",)
     } else if (phoneNumber[0] == "8" && phoneNumber.length > 17) {
       setPhoneNumber(phoneNumber.slice(0, 17));
     }
-  }, [phoneNumber]);   
-
-
-
-  const handleForm = () => {
-    console.log("OK")
-  }
+  }, [phoneNumber]);
 
   return (
     <div className="promo">
@@ -119,7 +131,6 @@ const PromoZone = () => {
 
           {/* Phone number */}
           <div className="side__phoneNumber">
-            +7(___)___-__-__
             <div className="side__input">
               <input
                 ref={focusRef}
@@ -130,12 +141,6 @@ const PromoZone = () => {
                 maxLength={18}
                 placeholder='+7(___)___-__-__'
               />
-              <span onClick={removePhoneNumber}>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <line x1="2.06066" y1="1.93934" x2="22.3423" y2="22.2209" stroke="black" strokeWidth="3"/>
-                  <line x1="1.37342" y1="22.2216" x2="21.655" y2="1.93996" stroke="black" strokeWidth="3"/>
-                </svg>
-              </span>
             </div>
           </div>
 
@@ -161,7 +166,7 @@ const PromoZone = () => {
 
           {/* Check personal data */}
           <div className="side__check">
-            <label>
+            <label onClick={(e) => handleConfirm(e)}>
               <input type="checkbox" />
               <div className="fancyCheck"></div>
               Согласие на обработку<br /> персональных данных
@@ -170,11 +175,9 @@ const PromoZone = () => {
 
           {/* Confirm number */}
           <button
-            onClick={handleForm}
-            className={cn("side__confirmBtn", {
-              "dis": !dis
-            })}
-            disabled={!dis}
+            onClick={handleSubmit}
+            className={ isFullNumber && dis ? "side__confirmBtn" : "side__confirmBtn dis"}
+            disabled={!isFullNumber || !dis}
           >Подтвердить номер</button>
         </div>
 

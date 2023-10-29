@@ -1,11 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import videoBg from '../../assets/video/videoBg.mp4';
 import qr from '../../assets/img/qr.svg';
 
 
 const Main = () => {
+  const goTo = useNavigate();
+
+  setTimeout(() => {
+    goTo('/promo');
+  }, 5000);
+
   return (
     <div className="banner">
       <video
